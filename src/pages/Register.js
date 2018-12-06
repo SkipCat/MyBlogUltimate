@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link, withRouter } from 'react-router-dom';
 
-import { registerUser } from '../actions/user';
+import { registerUser, clearRegisterData } from '../actions/user';
 
 class Register extends Component {
 
@@ -11,17 +12,15 @@ class Register extends Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (this.props.isRegistered) {
-      window.location.href = '/';
+    if (this.props.registerSuccess) {
+      this.props.clearRegisterData();
+      this.props.history.push('/login');
     }
   }
 
-  handleUsernameChange = (e) => {
-    this.setState({ username: e.target.value });
-  };
-
-  handlePasswordChange = (e) => {
-    this.setState({ password: e.target.value });
+  handleInputChange = (event) => {
+    const { value, name } = event.target;
+    this.setState({ [name]: value });
   };
 
   onSubmit = (e) => {
@@ -38,29 +37,35 @@ class Register extends Component {
           <input
             type="text" name="username" required
             value={this.state.username}
-            onChange={this.handleUsernameChange}
+            onChange={this.handleInputChange}
           />
           <label htmlFor="password">Password</label>
           <input
             type="password" name="password" required
             value={this.state.password}
-            onChange={this.handlePasswordChange}
+            onChange={this.handleInputChange}
           />
-          <button onClick={e => this.onSubmit(e)}>REGISTER</button>
+          <button onClick={this.onSubmit}>REGISTER</button>
         </form>
+        {this.props.registerError && <p>{this.props.registerError}</p>}
+        <Link to="/login">Already registered?</Link>
       </main>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
-  isRegistered: state.userReducer.isRegistered
+  registerSuccess: state.userReducer.registerSuccess,
+  registerError: state.userReducer.registerError
 });
 
 const mapDispatchProps = (dispatch) => ({
   registerUser: (payload) => {
     dispatch(registerUser(payload));
+  },
+  clearRegisterData: () => {
+    dispatch(clearRegisterData())
   }
 });
 
-export default connect(mapStateToProps, mapDispatchProps)(Register);
+export default withRouter(connect(mapStateToProps, mapDispatchProps)(Register));

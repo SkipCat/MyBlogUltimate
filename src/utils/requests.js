@@ -1,6 +1,4 @@
-const host = 'localhost';
-const port = 5000;
-const baseUrl = `http://${host}:${port}`;
+const baseUrl = `http://${window.location.hostname}:${5000}`;
 
 export const postRequest = (route, data) => {
   return fetch(`${baseUrl}${route}`, {
