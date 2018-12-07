@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import Home from './pages/Home';
 import Register from './pages/Register';
 import Login from './pages/Login';
-import Secret from './pages/Secret';
+import CreateArticle from './pages/CreateArticle';
 import NotFound from './pages/NotFound';
 
 import NavBar from './components/NavBar';
@@ -23,7 +23,7 @@ class App extends Component {
         </header>
         <Switch>
           <Route exact path="/" component={Home}/>
-          <Route exact path="/secret" component={withAuth(Secret)}/>
+          <Route exact path="/article/create" component={withAuth(CreateArticle)}/>
           <Route path="/register" component={Register}/>
           <Route path="/login" component={Login}/>
           <Route path="" component={NotFound}/>

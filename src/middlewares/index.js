@@ -1,9 +1,11 @@
 import { applyMiddleware } from 'redux';
 
 import userMiddleware from './user';
+import articleMiddleware from './article';
 
 const customMiddlewares = {
-  ...userMiddleware
+  ...userMiddleware,
+  ...articleMiddleware
 };
 
 export default applyMiddleware(store => next => action => {

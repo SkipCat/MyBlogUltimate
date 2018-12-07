@@ -8,7 +8,10 @@ class Home extends Component {
     return (
       <main>
         <h1>Home</h1>
-        {!this.props.user.token && <Link to="/login">Log in</Link>}        
+        { !this.props.user.token
+          ? <Link to="/login">Log in</Link>
+          : <Link to="/article/create">Write an article</Link>
+        }
       </main>
     );
   }
