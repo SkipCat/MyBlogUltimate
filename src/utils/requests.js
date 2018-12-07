@@ -14,3 +14,10 @@ export const getRequest = (route) => {
     headers: { 'Content-Type': 'application/json' }
   }).then(response => response.json());
 };
+
+export const deleteRequest = (route) => {
+  return fetch(`${baseUrl}${route}`, {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' }
+  }).then(response => response.json());
+};

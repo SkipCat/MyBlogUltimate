@@ -29,22 +29,51 @@ commentRouter.post('/create', (req, res) => {
   Comment.create({ content, author, article }).then((comment) => {
     Article.findOneAndUpdate(
       { _id: article },
-      { $addToSet: { comments: comment._id } },
+      { $push: { comments: comment._id } },
       (err, _) => {
-        if (err) return err => res.status(500).json({ error: err.message });
+        if (err) return res.status(500).json({ error: err.message });
       }
     );
     User.findOneAndUpdate(
       { _id: author },
-      { $addToSet: { comments: comment._id } },
+      { $push: { comments: comment._id } },
       (err, _) => {
-        if (err) return err => res.status(500).json({ error: err.message });
+        if (err) return res.status(500).json({ error: err.message });
       }
     );
     res.status(200).json({ response: 'Comment sucessfully created!' })
   }).catch(
     err => res.status(500).json({ error: err.message })
   );
+
+});
+
+commentRouter.delete('/delete/:id', (req, res) => {
+  const commentId = req.params.id;
+
+  Comment.findById(commentId).then(comment => {
+    Article.findOneAndUpdate(
+      { _id: comment.article },
+      { $pull: { comments: commentId } },
+      (err, _) => {
+        if (err) return res.status(500).json({ error: err.message });
+      }
+    );
+    User.findOneAndUpdate(
+      { _id: comment.author },
+      { $pull: { comments: commentId } },
+      (err, _) => {
+        if (err) return res.status(500).json({ error: err.message });
+      }
+    );
+  }).then(() => {
+    Comment.deleteOne({ _id: commentId }, (err, result) => {
+      if (err) return res.status(500).json({ error: err.message });
+      if (result) {
+        return res.status(200).json({ response: 'Suppression succeeded!'})
+      }
+    });
+  }).catch(error => res.status(500).json({ error: error.message }));
 
 });
 

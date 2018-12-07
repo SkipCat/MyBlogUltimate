@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 import { getArticle } from '../actions/article';
-import { postComment } from '../actions/comment';
+import { postComment, deleteComment } from '../actions/comment';
 
 class Article extends Component {
 
@@ -20,13 +20,18 @@ class Article extends Component {
     this.setState({ [name]: value });
   }
 
-  onSubmit = (e) => {
+  onSubmitComment = (e) => {
     e.preventDefault();
     this.props.postComment({
       content: this.state.comment,
       author: this.props.user._id,
       article: this.props.article._id
     });
+  }
+
+  onDeleteComment = (e, id) => {
+    e.preventDefault();
+    this.props.deleteComment(id);
   }
 
   render() {
@@ -51,7 +56,7 @@ class Article extends Component {
                     value={this.state.comment}
                     onChange={this.handleInputChange}
                   />
-                  <button onClick={this.onSubmit}>POST</button>
+                  <button onClick={this.onSubmitComment}>POST</button>
                 </form>
               </Fragment>
             )}
@@ -59,6 +64,11 @@ class Article extends Component {
               <div key={comment._id}>
                 <p>{comment.author} on {comment.dateCreated}</p>
                 <p>{comment.content}</p>
+                { (comment.author === user._id || article.author === user._id) && (
+                  <button onClick={(e) => this.onDeleteComment(e, comment._id)}>
+                    DELETE
+                  </button>
+                )}
               </div>
             ))}
           </Fragment>
@@ -90,6 +100,9 @@ const mapDispatchProps = (dispatch) => ({
   },
   postComment: (payload) => {
     dispatch(postComment(payload))
+  },
+  deleteComment: (payload) => {
+    dispatch(deleteComment(payload))
   }
 });
 
