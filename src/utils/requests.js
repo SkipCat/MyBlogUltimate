@@ -7,3 +7,10 @@ export const postRequest = (route, data) => {
     body: JSON.stringify(data)
   }).then(response => response.json());
 };
+
+export const getRequest = (route) => {
+  return fetch(`${baseUrl}${route}`, {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+  }).then(response => response.json());
+};

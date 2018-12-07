@@ -18,12 +18,7 @@ class CreateArticle extends Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-    this.props.createArticle({
-      ...this.state,
-      author: this.props.user._id,
-      dateCreated: Date.now,
-      dateUpdated: Date.now
-    });
+    this.props.createArticle({ ...this.state, author: this.props.user._id });
   }
 
   render() {

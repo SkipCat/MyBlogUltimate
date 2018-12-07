@@ -1,9 +1,14 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
+import shortid from 'shortid';
 
 const UserSchema = new mongoose.Schema({
+  _id: { type: String, default: shortid.generate },
   username: { type: String, required: true, unique: true },
-  password: { type: String, required: true }
+  password: { type: String, required: true },
+  articles: [
+    { type: String, ref: 'Article' }
+  ]
 });
 
 UserSchema.methods.isPasswordCorrect = function(password, callback) {

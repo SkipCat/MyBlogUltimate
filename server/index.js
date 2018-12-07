@@ -26,6 +26,5 @@ mongoose.connect(
   app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
 });
 
-// app.use('/', require('./routes/blog.router'))
 app.use('/', require('./routes/user'));
 app.use('/article', require('./routes/article'));

@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 
 import Article from '../models/Article.model';
+import '../models/User.model';
 
 const articleRouter = express.Router();
 
@@ -11,7 +12,7 @@ if (config.error) {
 }
 
 articleRouter.post('/create', (req, res) => {
-  const { title, content, author, dateCreated, dateUpdated } = req.body;
+  const { title, content, author } = req.body;
 
   // Check for invalid inputs
   req.checkBody('title', 'Title is required').notEmpty();
@@ -25,11 +26,17 @@ articleRouter.post('/create', (req, res) => {
   }
 
   // If everything OK we insert new article in database
-  Article.create({ title, content, dateCreated, dateUpdated, author }).then(
+  Article.create({ title, content, author }).then(
     () => res.status(200).json({ response: 'Article sucessfully created!' })
   ).catch(
     err => res.status(500).json({ error: err.message })
   );
+});
+
+articleRouter.get('/all', (req, res) => {
+  Article.find().populate('users').exec().then(articles => {
+    res.status(200).json({ response: articles })
+  }).catch(error => res.status(500).json({ error: error.message }));
 });
 
 module.exports = articleRouter;
