@@ -11,6 +11,6 @@ export const postRequest = (route, data) => {
 export const getRequest = (route) => {
   return fetch(`${baseUrl}${route}`, {
     method: 'GET',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json' }
   }).then(response => response.json());
 };

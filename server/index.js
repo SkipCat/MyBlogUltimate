@@ -28,3 +28,4 @@ mongoose.connect(
 
 app.use('/', require('./routes/user'));
 app.use('/article', require('./routes/article'));
+app.use('/comment', require('./routes/comment'));

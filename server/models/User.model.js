@@ -8,7 +8,10 @@ const UserSchema = new mongoose.Schema({
   password: { type: String, required: true },
   articles: [
     { type: String, ref: 'Article' }
-  ]
+  ],
+  comments: [
+    { type: String, ref: 'Comment' }
+  ],
 });
 
 UserSchema.methods.isPasswordCorrect = function(password, callback) {
