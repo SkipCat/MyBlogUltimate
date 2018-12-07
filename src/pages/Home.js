@@ -38,12 +38,7 @@ class Home extends Component {
 
 const mapStateToProps = (state) => ({
   user: state.userReducer.user
-    || {
-      token: localStorage.getItem('token'),
-      username: localStorage.getItem('username'),
-      _id: localStorage.getItem('userId')
-    }
-    || undefined,
+    || JSON.parse(localStorage.getItem('user')) || undefined,
   articles: state.articleReducer.articles
 });
 

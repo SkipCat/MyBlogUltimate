@@ -13,12 +13,14 @@ class NavBar extends Component {
   }
 
   render() {
+    const { user } = this.props;
+
     return (
       <nav>
         <Link to="/">Home</Link>
-        { this.props.user.token ? (
+        { user && user.token ? (
           <Fragment>
-            <Link to="/profile">{this.props.user.username}</Link>
+            <Link to={`/profile/${user._id}`}>{user.username}</Link>
             <button onClick={this.onSubmit}>Logout</button>
           </Fragment>
         ) : (

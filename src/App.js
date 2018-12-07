@@ -7,6 +7,8 @@ import Register from './pages/Register';
 import Login from './pages/Login';
 import CreateArticle from './pages/CreateArticle';
 import Article from './pages/Article';
+import Profile from './pages/Profile';
+import EditProfile from './pages/EditProfile';
 import NotFound from './pages/NotFound';
 
 import NavBar from './components/NavBar';
@@ -25,9 +27,11 @@ class App extends Component {
         <Switch>
           <Route exact path="/" component={Home}/>
           <Route exact path="/article/create" component={withAuth(CreateArticle)}/>
-          <Route exact path="/article/:id" component={Article}/>
-          <Route path="/register" component={Register}/>
-          <Route path="/login" component={Login}/>
+          <Route path="/article/:id" component={Article}/>
+          <Route exact path="/register" component={Register}/>
+          <Route exact path="/login" component={Login}/>
+          <Route exact path="/profile/edit" component={withAuth(EditProfile)}/>
+          <Route path="/profile/:id" component={Profile}/>
           <Route path="" component={NotFound}/>
         </Switch>
       </div>
@@ -37,12 +41,7 @@ class App extends Component {
 
 const mapStateToProps = (state) => ({
   user: state.userReducer.user
-    || {
-      token: localStorage.getItem('token'),
-      username: localStorage.getItem('username'),
-      _id: localStorage.getItem('userId')
-    }
-    || undefined
+    || JSON.parse(localStorage.getItem('user')) || undefined
 });
 
 export default withRouter(connect(mapStateToProps, {})(App));

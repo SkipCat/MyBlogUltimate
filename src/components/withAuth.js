@@ -17,12 +17,7 @@ export default function withAuth(ComponentToProtect) {
 
   const mapStateToProps = (state) => ({
     user: state.userReducer.user
-      || {
-        token: localStorage.getItem('token'),
-        username: localStorage.getItem('username'),
-        _id: localStorage.getItem('userId')
-      }
-      || undefined
+      || JSON.parse(localStorage.getItem('user')) || undefined
   });
 
   return withRouter(connect(mapStateToProps, {})(WithAuth));

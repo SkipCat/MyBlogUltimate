@@ -8,7 +8,27 @@ class Login extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { username: '', password: '' };
+    this.state = {
+      username: '',
+      password: '',
+      prevPath: ''
+    };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    // Avoid redirection from EditProfile to Login page
+    // 1. get previous path
+    if (nextProps.location !== this.props.location) {
+      this.setState({ prevPath: this.props.location })
+    }
+  }
+
+  // Avoid redirection from EditProfile to Login page
+  // 2. go back to previous path
+  componentDidMount() {
+    if (this.props.user && this.props.user.token) {
+      this.props.history.push(this.state.prevPath);
+    }
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -26,7 +46,8 @@ class Login extends Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-    this.props.loginUser(this.state);
+    const { username, password } = this.state
+    this.props.loginUser({ username, password });
   }
 
   render() {

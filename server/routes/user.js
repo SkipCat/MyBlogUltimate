@@ -78,4 +78,30 @@ userRouter.post('/login', (req, res) => {
   }).catch((err) => res.status(500).json({ error: err }));
 });
 
+userRouter.get('/profile/:id', (req, res) => {
+  User.findById(req.params.id).populate('articles comments').exec().then(user => {
+    res.status(200).json({ response: user })
+  }).catch(error => res.status(500).json({ error: error.message }));
+})
+
+userRouter.post('/profile/edit', (req, res) => {
+  let fieldsToUpdate = {};
+
+  for (const data in req.body) {
+    if (req.body[data] !== '' && data !== '_id') {
+      if (data === 'password') {
+        fieldsToUpdate[data] = bcrypt.hashSync(req.body[data], 8);
+      } else {
+        fieldsToUpdate[data] = req.body[data];
+      }
+    }
+  }
+
+  User.findByIdAndUpdate(req.body._id, { $set: fieldsToUpdate }, (err, _) => {
+    if (err) return res.status(500).json({ error: err.message });
+  }).then((user) => {
+    return res.status(200).json({ response: user });
+  }).catch(error => res.status(500).json({ error: error.message }));
+})
+
 module.exports = userRouter;

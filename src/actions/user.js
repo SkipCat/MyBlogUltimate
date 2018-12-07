@@ -4,7 +4,7 @@ export const CLEAR_LOGIN = 'CLEAR_LOGIN';
 
 export const registerUser = (payload) => ({
   type: 'MIDDLEWARE_REGISTER',
-  payload: payload
+  payload
 });
 
 export const clearRegisterData = () => ({
@@ -13,7 +13,7 @@ export const clearRegisterData = () => ({
 
 export const loginUser = (payload) => ({
   type: 'MIDDLEWARE_LOGIN',
-  payload: payload
+  payload
 });
 
 export const logoutUser = () => ({
@@ -22,4 +22,14 @@ export const logoutUser = () => ({
 
 export const clearLoginData = () => ({
   type: CLEAR_LOGIN
+});
+
+export const getProfile = (payload) => ({
+  type: 'MIDDLEWARE_GET_PROFILE',
+  payload
+});
+
+export const editProfile = (payload) => ({
+  type: 'MIDDLEWARE_EDIT_PROFILE',
+  payload
 });
