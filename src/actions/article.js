@@ -6,3 +6,8 @@ export const createArticle = (payload) => ({
 export const getArticles = () => ({
   type: 'MIDDLEWARE_GET_ARTICLES'
 });
+
+export const getArticle = (id) => ({
+  type: 'MIDDLEWARE_GET_ARTICLE',
+  payload: id
+});

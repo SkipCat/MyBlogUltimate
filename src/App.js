@@ -6,6 +6,7 @@ import Home from './pages/Home';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import CreateArticle from './pages/CreateArticle';
+import Article from './pages/Article';
 import NotFound from './pages/NotFound';
 
 import NavBar from './components/NavBar';
@@ -24,6 +25,7 @@ class App extends Component {
         <Switch>
           <Route exact path="/" component={Home}/>
           <Route exact path="/article/create" component={withAuth(CreateArticle)}/>
+          <Route exact path="/article/:id" component={Article}/>
           <Route path="/register" component={Register}/>
           <Route path="/login" component={Login}/>
           <Route path="" component={NotFound}/>

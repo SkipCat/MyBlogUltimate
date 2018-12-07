@@ -39,4 +39,11 @@ articleRouter.get('/all', (req, res) => {
   }).catch(error => res.status(500).json({ error: error.message }));
 });
 
+articleRouter.get('/:id', (req, res) => {
+  console.log('in server', req.params)
+  Article.findById(req.params.id).populate('users').exec().then(article => {
+    res.status(200).json({ response: article })
+  }).catch(error => res.status(500).json({ error: error.message }));
+});
+
 module.exports = articleRouter;

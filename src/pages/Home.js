@@ -6,7 +6,8 @@ import { getArticles } from '../actions/article';
 
 class Home extends Component {
 
-  componentDidMount() {
+  constructor(props) {
+    super(props);
     this.props.getArticles();
   }
 

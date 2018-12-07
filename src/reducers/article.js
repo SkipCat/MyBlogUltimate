@@ -2,7 +2,9 @@ import {
   CREATE_ARTICLE_OK,
   CREATE_ARTICLE_ERROR,
   GET_ARTICLES_OK,
-  GET_ARTICLES_ERROR
+  GET_ARTICLES_ERROR,
+  GET_ARTICLE_OK,
+  GET_ARTICLE_ERROR
 } from '../middlewares/article';
 
 export default (state = {}, action) => {
@@ -15,6 +17,10 @@ export default (state = {}, action) => {
       return { ...state, articles: action.payload.response };
     case GET_ARTICLES_ERROR:
       return { ...state, articles: action.payload.error };
+    case GET_ARTICLE_OK:
+      return { ...state, article: action.payload.response };
+    case GET_ARTICLE_ERROR:
+      return { ...state, article: action.payload.error };
     default:
       return state;
   }
