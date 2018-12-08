@@ -70,7 +70,8 @@ userRouter.post('/login', (req, res) => {
           return res.status(200).json({
             token: token,
             username: username,
-            _id: user._id
+            _id: user._id,
+            role: user.role
           });
         }
       });

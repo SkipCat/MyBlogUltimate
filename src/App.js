@@ -7,6 +7,7 @@ import Register from './pages/Register';
 import Login from './pages/Login';
 import CreateArticle from './pages/CreateArticle';
 import Article from './pages/Article';
+import EditArticle from './pages/EditArticle';
 import Profile from './pages/Profile';
 import EditProfile from './pages/EditProfile';
 import NotFound from './pages/NotFound';
@@ -27,6 +28,7 @@ class App extends Component {
         <Switch>
           <Route exact path="/" component={Home}/>
           <Route exact path="/article/create" component={withAuth(CreateArticle)}/>
+          <Route path="/article/edit/:id" component={withAuth(EditArticle)}/>
           <Route path="/article/:id" component={Article}/>
           <Route exact path="/register" component={Register}/>
           <Route exact path="/login" component={Login}/>

@@ -47,7 +47,7 @@ class Profile extends Component {
                       <p>{comment.content}</p>
                       <p>
                         the
-                        <Link to={`article/${comment.article}`}>{comment.article}</Link>
+                        <Link to={`/article/${comment.article}`}>{comment.article}</Link>
                       </p>
                     </li>
                   ))}

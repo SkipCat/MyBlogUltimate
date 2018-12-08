@@ -12,15 +12,15 @@ class Home extends Component {
   }
 
   render() {
+    const { user, articles } = this.props;
+
     return (
       <main>
         <h1>Home</h1>
-        { !this.props.user.token
-          ? <Link to="/login">Log in</Link>
-          : <Link to="/article/create">Write an article</Link>
-        }
+        {!user.token && <Link to="/login">Log in</Link>}
+        {(user.token && user.role !== 'USER') &&  <Link to="/article/create">Write an article</Link>}
         <ul>
-          { this.props.articles && this.props.articles.map(article => (
+          { articles && articles.map(article => (
             <li key={article._id}>
               <Link to={`article/${article._id}`}>
                 <p>{article.title}</p>

@@ -12,6 +12,7 @@ const UserSchema = new mongoose.Schema({
   comments: [
     { type: String, ref: 'Comment' }
   ],
+  role: { type: String, default: 'USER' }
 });
 
 UserSchema.methods.isPasswordCorrect = function(password, callback) {

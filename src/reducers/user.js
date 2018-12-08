@@ -27,8 +27,8 @@ export default (state = initialState, action) => {
         registerError: undefined
       };
     case LOGIN_OK:
-      const { token, username, _id } = action.payload.response;
-      localStorage.setItem('user', JSON.stringify({ token, username, _id }));
+      const { token, username, _id, role } = action.payload.response;
+      localStorage.setItem('user', JSON.stringify({ token, username, _id, role }));
       return { ...state, user: action.payload.response };
     case LOGIN_ERROR:
       return { ...state, loginError: action.payload.error };
@@ -49,8 +49,8 @@ export default (state = initialState, action) => {
       localStorage.setItem('user', JSON.stringify({
         token: oldUser.token,
         username: newUsername,
-        _id: oldUser._id })
-      );
+        _id: oldUser._id
+      }));
 
       return {
         ...state,

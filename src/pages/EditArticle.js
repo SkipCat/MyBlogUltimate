@@ -2,13 +2,28 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import { createArticle } from '../actions/article';
+import { getArticle, editArticle } from '../actions/article';
 
-class CreateArticle extends Component {
+class EditArticle extends Component {
 
   constructor(props) {
     super(props);
     this.state = { title: '', content: '' };
+
+    // Avoid loop call
+    if (!this.props.article && this.props.user.role !== 'USER') {
+      this.props.getArticle(
+        window.location.href.substr(window.location.href.lastIndexOf('/') + 1)
+      );
+    }
+  }
+
+  componentDidMount() {
+    // Display values inside correspondant inputs
+    if (this.props.article) {
+      const { title, content } = this.props.article;
+      this.setState({ title, content })
+    }
   }
 
   handleInputChange = (event) => {
@@ -18,7 +33,14 @@ class CreateArticle extends Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-    this.props.createArticle({ ...this.state, author: this.props.user._id });
+    const { article, user } = this.props;
+    
+    this.props.editArticle({
+      ...this.state,
+      dateUpdated: new Date(),
+      _id: article._id,
+      userId: user._id
+    });
   }
 
   render() {
@@ -31,7 +53,7 @@ class CreateArticle extends Component {
           </Fragment>
         ) : (
           <Fragment>
-            <h1>Create an article</h1>
+            <h1>Edit the article</h1>
             <form>
               <label htmlFor="title">Title</label>
               <input
@@ -45,7 +67,7 @@ class CreateArticle extends Component {
                 value={this.state.content}
                 onChange={this.handleInputChange}
               />
-              <button onClick={this.onSubmit}>CREATE</button>
+              <button onClick={this.onSubmit}>SAVE CHANGES</button>
             </form>
             {this.props.articleData && <p>{this.props.articleData}</p>}
           </Fragment>
@@ -56,13 +78,17 @@ class CreateArticle extends Component {
 }
 
 const mapStateToProps = (state) => ({
+  article: state.articleReducer.article,
   articleData: state.articleReducer.data
 });
 
 const mapDispatchProps = (dispatch) => ({
-  createArticle: (payload) => {
-    dispatch(createArticle(payload));
+  getArticle: (payload) => {
+    dispatch(getArticle(payload))
+  },
+  editArticle: (payload) => {
+    dispatch(editArticle(payload));
   }
 });
 
-export default withRouter(connect(mapStateToProps, mapDispatchProps)(CreateArticle));
+export default withRouter(connect(mapStateToProps, mapDispatchProps)(EditArticle));

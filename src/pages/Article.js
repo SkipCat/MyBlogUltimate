@@ -1,8 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
-import { getArticle } from '../actions/article';
+import { getArticle, deleteArticle } from '../actions/article';
 import { postComment, deleteComment } from '../actions/comment';
 
 class Article extends Component {
@@ -10,9 +10,12 @@ class Article extends Component {
   constructor(props) {
     super(props);
     this.state = { comment: '' };
-    this.props.getArticle(
-      window.location.href.substr(window.location.href.lastIndexOf('/') + 1)
-    );
+
+    if (!this.props.article) {
+      this.props.getArticle(
+        window.location.href.substr(window.location.href.lastIndexOf('/') + 1)
+      );
+    }
   }
 
   handleInputChange = (event) => {
@@ -31,7 +34,14 @@ class Article extends Component {
 
   onDeleteComment = (e, id) => {
     e.preventDefault();
-    this.props.deleteComment(id);
+    this.props.deleteComment({ id, userId: this.props.user._id });
+  }
+
+  onDeleteArticle = (e) => {
+    e.preventDefault();
+    const { article, user } = this.props;
+    this.props.deleteArticle({ _id: article._id, userId: user._id });
+    this.props.history.push('/');
   }
 
   render() {
@@ -47,6 +57,9 @@ class Article extends Component {
               <p>Updated on {article.dateUpdated}</p>
             }
             <p>{article.content}</p>
+            { (user.token && user.role !== 'USER') && 
+              <Link to={`/article/edit/${article._id}`}>Edit this article</Link>
+            }
             { user.token && (
               <Fragment>
                 <h2>Post a comment</h2>
@@ -64,13 +77,17 @@ class Article extends Component {
               <div key={comment._id}>
                 <p>{comment.author} on {comment.dateCreated}</p>
                 <p>{comment.content}</p>
-                { (comment.author === user._id || article.author === user._id) && (
+                { (comment.author === user._id || article.author === user._id
+                  || user.role === 'SUPERADMIN') && (
                   <button onClick={(e) => this.onDeleteComment(e, comment._id)}>
                     DELETE
                   </button>
                 )}
               </div>
             ))}
+            { user.role === 'SUPERADMIN' && (
+              <button onClick={this.onDeleteArticle}>DELETE ARTICLE</button>
+            )} 
           </Fragment>
         ) : (
           <p>
@@ -98,6 +115,9 @@ const mapDispatchProps = (dispatch) => ({
   },
   deleteComment: (payload) => {
     dispatch(deleteComment(payload))
+  },
+  deleteArticle: (payload) => {
+    dispatch(deleteArticle(payload))
   }
 });
 

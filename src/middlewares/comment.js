@@ -30,7 +30,7 @@ export default {
     }));
   },
   MIDDLEWARE_DELETE_COMMENT: (payload, dispatch) => {
-    deleteRequest(`/comment/delete/${payload}`).then(
+    deleteRequest(`/comment/delete/${payload.id}`, payload).then(
       response => {
         if (response.error) {
           return dispatch({

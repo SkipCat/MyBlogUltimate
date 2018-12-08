@@ -15,9 +15,18 @@ export const getRequest = (route) => {
   }).then(response => response.json());
 };
 
-export const deleteRequest = (route) => {
+export const deleteRequest = (route, data = {}) => {
   return fetch(`${baseUrl}${route}`, {
     method: 'DELETE',
-    headers: { 'Content-Type': 'application/json' }
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  }).then(response => response.json());
+};
+
+export const putRequest = (route, data) => {
+  return fetch(`${baseUrl}${route}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
   }).then(response => response.json());
 };
