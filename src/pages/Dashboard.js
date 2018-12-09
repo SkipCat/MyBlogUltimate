@@ -6,6 +6,8 @@ import { getArticles, deleteArticle } from '../actions/article';
 import { getUsers, deleteUser } from '../actions/user';
 import { getComments, deleteComment } from '../actions/comment';
 
+import { dateToString } from '../utils/date';
+
 class Dashboard extends Component {
 
   constructor(props) {
@@ -107,7 +109,7 @@ class Dashboard extends Component {
           <h5>All articles</h5>
           <div className="row">
             <Link to="/article/create" className="right btn orange accent-2">
-              <i class="material-icons left">add</i>
+              <i className="material-icons left">add</i>
               Write an article
             </Link>
           </div>
@@ -128,9 +130,14 @@ class Dashboard extends Component {
                 <tr key={article._id}>
                   <td>{article._id}</td>
                   <td>{article.title}</td>
-                  <td>{article.author}</td>
-                  <td>{article.dateCreated}</td>
-                  <td>{article.dateUpdated}</td>
+                  <td>
+                    { article.author === null 
+                      ? <i>deleted</i>
+                      : <Link to={`/profile/${article.author._id}`}>{article.author.username}</Link>
+                    }
+                  </td>
+                  <td>{dateToString(article.dateCreated)}</td>
+                  <td>{dateToString(article.dateUpdated)}</td>
                   <td>
                     <Link
                       to={`/article/${article._id}`}
@@ -175,8 +182,17 @@ class Dashboard extends Component {
                 <tr key={comment._id}>
                   <td>{comment._id}</td>
                   <td>{comment.content}</td>
-                  <td>{comment.author}</td>
-                  <td>{comment.article}</td>
+                  <td>
+                    { comment.author === null
+                      ? <i>deleted</i>
+                      : <Link to={`/profile/${comment.author._id}`}>{comment.author.username}</Link>
+                    }
+                  </td>
+                  <td>
+                    <Link to={`/article/${comment.article}`}>
+                      {comment.article}
+                    </Link>
+                  </td>
                   <td>
                     <button
                       onClick={(e) => this.onDeleteComment(e, comment._id)}

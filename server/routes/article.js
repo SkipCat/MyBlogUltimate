@@ -49,13 +49,13 @@ articleRouter.post('/create', (req, res) => {
 });
 
 articleRouter.get('/all', (req, res) => {
-  Article.find().populate('users').exec().then(articles => {
+  Article.find().populate('author').exec().then(articles => {
     res.status(200).json({ response: articles })
   }).catch(error => res.status(500).json({ error: error.message }));
 });
 
 articleRouter.get('/:id', (req, res) => {
-  Article.findById(req.params.id).populate('users comments').exec().then(article => {
+  Article.findById(req.params.id).populate('author comments').exec().then(article => {
     res.status(200).json({ response: article })
   }).catch(error => res.status(500).json({ error: error.message }));
 });

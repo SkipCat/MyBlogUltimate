@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 
 import { getArticles } from '../actions/article';
 
+import { dateToString } from '../utils/date';
+
 class Home extends Component {
 
   constructor(props) {
@@ -37,7 +39,7 @@ class Home extends Component {
               <div className="card-content">
                 <p className="card-title">{article.title}</p>
                 <p>{article.author}</p>
-                <p>{article.dateCreated}</p>
+                <p>{dateToString(article.dateCreated)}</p>
               </div>
               <div className="card-action">
                 <Link to={`article/${article._id}`}>SEE ARTICLE</Link>

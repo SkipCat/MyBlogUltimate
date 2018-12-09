@@ -5,17 +5,17 @@ import { Link, withRouter } from 'react-router-dom';
 import { getArticle, deleteArticle } from '../actions/article';
 import { postComment, deleteComment } from '../actions/comment';
 
+import { dateToString } from '../utils/date';
+
 class Article extends Component {
 
   constructor(props) {
     super(props);
     this.state = { comment: '' };
 
-    if (!this.props.article) {
-      this.props.getArticle(
-        window.location.href.substr(window.location.href.lastIndexOf('/') + 1)
-      );
-    }
+    this.props.getArticle(
+      window.location.href.substr(window.location.href.lastIndexOf('/') + 1)
+    );
   }
 
   handleInputChange = (event) => {
@@ -63,21 +63,24 @@ class Article extends Component {
         { article ? (
           <Fragment>
             <h1>{article.title}</h1>
-            <p className="italic">Published on {article.dateCreated} by {article.author}</p>
+            <p className="italic">
+              Published on {dateToString(article.dateCreated)} by &nbsp;
+              <Link to={`/profile/${article.author._id}`}>{article.author.username}</Link>
+            </p>
             { (article.dateUpdated !== article.dateCreated) &&
-              <p className="italic">Updated on {article.dateUpdated}</p>
+              <p className="italic">Updated on {dateToString(article.dateUpdated)}</p>
             }
             <p className="text">{article.content}</p>
             { (user.token && user.role !== 'USER') &&
               <div className="row">
                 <div className="right">
-                  <Link to={`/article/edit/${article._id}`} className="btn orange accent-2">
+                  <Link to={`/article/edit/${article._id}`} className="btn-flat orange-text text-accent-2">
                     <i className="material-icons left">edit</i>
                     Edit article
                   </Link>
                   { user.role === 'SUPERADMIN' && (
                     <button
-                      onClick={this.onDeleteArticle} className="btn pink darken-2">
+                      onClick={this.onDeleteArticle} className="btn-flat pink-text text-darken-2">
                       <i className="material-icons left">delete_forever</i>
                       DELETE ARTICLE
                     </button>
@@ -93,6 +96,7 @@ class Article extends Component {
                     name="comment" required
                     value={this.state.comment}
                     onChange={this.handleInputChange}
+                    className="materialize-textarea"
                   />
                   <div className="row">
                     <button onClick={this.onSubmitComment} className="right btn-small orange accent-2">
@@ -108,8 +112,8 @@ class Article extends Component {
               article.comments.map(comment => (
                 <div className="card">
                   <div key={comment._id} className="card-content">
-                    <p>{comment.author} on {comment.dateCreated}</p>
-                    <p>{comment.content}</p>
+                    <p className="card-title">{comment.content}</p>
+                    <p>{comment.author} on {dateToString(comment.dateCreated)}</p>
                   </div>
                   <div className="card-action">
                     { (comment.author === user._id || article.author === user._id
