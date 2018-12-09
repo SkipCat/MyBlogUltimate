@@ -12,3 +12,56 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+header nav {
+  font-size: 18px;
+}
+
+header a:hover, header button:hover {
+  text-decoration: underline;
+}
+
+#root {
+  margin-bottom: 50px;
+}
+
+a, button {
+  cursor: pointer;
+}
+
+.italic {
+  font-style: italic;
+}
+
+.text {
+  font-size: 18px;
+}
+
+h1 + form {
+  margin-top: 50px;
+}
+
+textarea {
+  height: 125px;
+}
+
+/* label underline focus color */
+.input-field input:focus,
+.input-field textarea:focus {
+  border-bottom: 1px solid #ffab40;
+  box-shadow: 0 1px 0 0 #ffab40;
+}
+/* invalid color */
+.input-field input.invalid,
+.input-field textarea.invalid {
+  border-bottom: 1px solid #c2185b;
+  box-shadow: 0 1px 0 0 #c2185b;
+}
+
+.dashboard-category {
+  margin-top: 50px;
+}
+
+.action-btn {
+  text-transform: capitalize;
+}

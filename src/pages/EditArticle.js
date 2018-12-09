@@ -45,7 +45,7 @@ class EditArticle extends Component {
 
   render() {
     return (
-      <main>
+      <main className="container">
         { this.props.user.role === 'USER' ? (
           <Fragment>
             <h1>403 Forbidden</h1>
@@ -55,19 +55,29 @@ class EditArticle extends Component {
           <Fragment>
             <h1>Edit the article</h1>
             <form>
-              <label htmlFor="title">Title</label>
-              <input
-                type="text" name="title" required
-                value={this.state.title}
-                onChange={this.handleInputChange}
-              />
-              <label htmlFor="content">Content</label>
-              <textarea
-                name="content" required
-                value={this.state.content}
-                onChange={this.handleInputChange}
-              />
-              <button onClick={this.onSubmit}>SAVE CHANGES</button>
+              <div className="input-field">
+                <input
+                  type="text" name="title" required autofocus
+                  value={this.state.title}
+                  onChange={this.handleInputChange}
+                />
+                <label htmlFor="title" className="active">Title</label>
+              </div>
+              <div className="input-field">
+                <textarea
+                  name="content" required
+                  value={this.state.content}
+                  onChange={this.handleInputChange}
+                  className="materialize-textarea"
+                />
+                <label htmlFor="content" className="active">Content</label>
+              </div>
+              <div className="row">
+                <button onClick={this.onSubmit} className="right btn">
+                  <i className="material-icons left">check</i>
+                  SAVE CHANGES
+                </button>
+              </div>
             </form>
             {this.props.articleData && <p>{this.props.articleData}</p>}
           </Fragment>

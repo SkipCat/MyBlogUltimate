@@ -16,14 +16,12 @@ import NotFound from './pages/NotFound';
 import NavBar from './components/NavBar';
 import withAuth from './components/withAuth';
 
-import './App.css';
-
 class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
+      <div>
+        <header>
           <NavBar user={this.props.user} />
         </header>
         <Switch>

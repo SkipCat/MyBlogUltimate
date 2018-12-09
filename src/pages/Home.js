@@ -15,19 +15,34 @@ class Home extends Component {
     const { user, articles } = this.props;
 
     return (
-      <main>
-        <h1>Home</h1>
+      <main className="container">
+        <h1>My Blog Ultimate</h1>
         {!user.token && <Link to="/login">Log in</Link>}
-        {(user.token && user.role !== 'USER') &&  <Link to="/article/create">Write an article</Link>}
+        { (user.token && user.role !== 'USER') && (
+          <div className="row">
+            { user.role === 'SUPERADMIN' && (
+              <Link to="/admin" className="btn pink darken-2">
+                Dashboard
+              </Link>
+            )}
+            <Link to="/article/create" className="right btn orange accent-2">
+              <i class="material-icons left">add</i>
+              Write an article
+            </Link>
+          </div>
+        )}
         <ul>
           { articles && articles.map(article => (
-            <li key={article._id}>
-              <Link to={`article/${article._id}`}>
-                <p>{article.title}</p>
-              </Link>
-              <p>{article.content}</p>
-              <p>{article.author}</p>
-              <p>{article.dateCreated}</p>
+            <li key={article._id} className="card">
+              <div className="card-content">
+                <p className="card-title">{article.title}</p>
+                <p>{article.content}</p>
+                <p>{article.author}</p>
+                <p>{article.dateCreated}</p>
+              </div>
+              <div className="card-action">
+                <Link to={`article/${article._id}`}>SEE ARTICLE</Link>
+              </div>
             </li>
           ))}
         </ul>

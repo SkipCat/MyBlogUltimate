@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import { getProfile } from '../actions/user';
+import { getProfile, logoutUser } from '../actions/user';
 
 class Profile extends Component {
 
@@ -13,52 +13,59 @@ class Profile extends Component {
     );
   }
 
+  logout = (e) => {
+    e.preventDefault();
+    this.props.logoutUser(this.state);
+    this.props.history.push('/login');
+  }
+
   render() {
     const { profile, user } = this.props;
     
     return (
-      <main>
+      <main className="container">
         { profile ? (
           <Fragment>
-            <p>{profile.username}</p>
+            <h1>{profile.username}</h1>
+            <h5>Number of written article(s): {profile.articles.length}.</h5>
             <ul>
-              { profile.articles ? (
-                <Fragment>
-                  <p>Number of written article(s): {profile.articles.length}.</p>
-                  { profile.articles.map(article => (
-                    <li key={article._id}>
-                      <Link to={`/article/${article._id}`}>
-                        <p>{article.title}</p>
-                      </Link>
-                      <p>the {article.dateCreated}</p>
-                    </li>
-                  ))}
-                </Fragment>
-              ) : (
-                <p>No written article yet :(</p>
-              )}
+              { profile.articles && profile.articles.map(article => (
+                <li key={article._id}>
+                  <Link to={`/article/${article._id}`}>
+                    <p>{article.title}</p>
+                  </Link>
+                  <p>the {article.dateCreated}</p>
+                </li>
+              ))}
             </ul>
+            <h5>Number of written comment(s): {profile.comments.length}.</h5>
             <ul>
-              { profile.comments ? (
-                <Fragment>
-                  <p>Number of written comment(s): {profile.comments.length}.</p>
-                  { profile.comments.map(comment => (
-                    <li key={comment._id}>
-                      <p>{comment.content}</p>
-                      <p>
-                        the
-                        <Link to={`/article/${comment.article}`}>{comment.article}</Link>
-                      </p>
-                    </li>
-                  ))}
-                </Fragment>
-              ) : (
-                <p>No written comment yet :(</p>
-              )}
+              { profile.comments && profile.comments.map(comment => (
+                <li key={comment._id}>
+                  <p>{comment.content}</p>
+                  <p>
+                    the
+                    <Link to={`/article/${comment.article}`}>{comment.article}</Link>
+                  </p>
+                </li>
+              ))}
             </ul>
             { (profile._id === user._id || user.role === 'SUPERADMIN') && (
-              <Link to={`/profile/edit/${profile._id}`}>Edit profile</Link>
+              <div className="row">
+                <Link to={`/profile/edit/${profile._id}`} className="right btn orange accent-2">
+                  <i className="material-icons left">edit</i>
+                  Edit profile
+                </Link>
+              </div>
             )}
+            <div className="row">
+              <button
+                onClick={this.logout}
+                className="btn-flat pink-text text-darken-2"
+              >
+                Logout
+              </button>
+            </div>
           </Fragment>
         ) : (
           <p>
@@ -80,6 +87,9 @@ const mapStateToProps = (state) => ({
 const mapDispatchProps = (dispatch) => ({
   getProfile: (payload) => {
     dispatch(getProfile(payload))
+  },
+  logoutUser: () => {
+    dispatch(logoutUser())
   },
 });
 

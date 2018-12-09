@@ -52,25 +52,31 @@ class Login extends Component {
 
   render() {
     return (
-      <main>
+      <main className="container">
         <h1>Login</h1>
         <form>
-          <label htmlFor="username">Username</label>
-          <input
-            type="text" name="username" required
-            value={this.state.username}
-            onChange={this.handleInputChange}
-          />
-          <label htmlFor="password">Password</label>
-          <input
-            type="password" name="password" required
-            value={this.state.password}
-            onChange={this.handleInputChange}
-          />
-          <button onClick={this.onSubmit}>Login</button>
+          <div className="input-field">
+            <input
+              type="text" name="username" required
+              value={this.state.username}
+              onChange={this.handleInputChange}
+            />
+            <label htmlFor="username" className="active">Username</label>
+          </div>
+          <div className="input-field">
+            <input
+              type="password" name="password" required
+              value={this.state.password}
+              onChange={this.handleInputChange}
+            />
+            <label htmlFor="password" className="active">Password</label>
+          </div>
+          <div className="row">
+            <Link to="/register">Not registered yet?</Link>
+            <button onClick={this.onSubmit} className="right btn-small">Login</button>
+          </div>
         </form>
         {this.props.loginError && <p>{this.props.loginError}</p>}
-        <Link to="/register">Not registered yet?</Link>
       </main>
     );
   }

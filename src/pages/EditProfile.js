@@ -49,35 +49,53 @@ class EditProfile extends Component {
     const { user, editError } = this.props;
 
     return (
-      <main>
+      <main className="container">
         <h1>Edit profile</h1>
         <form>
-          <label htmlFor="username">Username</label>
-          <input
-            type="text" name="username" required
-            value={this.state.username}
-            onChange={this.handleInputChange}
-          />
-          <button onClick={this.onSubmit}>CHANGE USERNAME</button>
+          <div className="input-field">
+            <input
+              type="text" name="username" required autofocus
+              value={this.state.username}
+              onChange={this.handleInputChange}
+            />
+            <label htmlFor="username" className="active">Username</label>
+          </div>
+          <div className="row">
+            <button onClick={this.onSubmit} className="right btn-small orange accent-2">
+              CHANGE USERNAME
+            </button>
+          </div>
         </form>
         <form>
-          <label htmlFor="password">Password</label>
-          <input
-            type="password" name="password" required
-            value={this.state.password}
-            onChange={this.handleInputChange}
-          />
-          <button onClick={this.onSubmit}>CHANGE PASSWORD</button>
+          <div className="input-field">
+            <input
+              type="password" name="password" required
+              value={this.state.password}
+              onChange={this.handleInputChange}
+            />
+            <label htmlFor="password" className="active">Password</label>
+          </div>
+          <div className="row">
+            <button onClick={this.onSubmit} className="right btn-small orange accent-2">
+              CHANGE PASSWORD
+            </button>
+          </div>
         </form>
         { user.role === 'SUPERADMIN' && (
           <form>
-            <label htmlFor="role">Role</label>
-            <input
-              type="type" name="role" required
-              value={this.state.role}
-              onChange={this.handleInputChange}
-            />
-            <button onClick={this.onSubmit}>CHANGE ROLE</button>
+            <div className="input-field">
+              <input
+                type="text" name="role" required
+                value={this.state.role}
+                onChange={this.handleInputChange}
+              />
+              <label htmlFor="role" className="active">Role</label>
+            </div>
+            <div className="row">
+              <button onClick={this.onSubmit} className="right btn-small orange accent-2">
+                CHANGE ROLE
+              </button>
+            </div>
           </form>
         )}
         {editError && <p>{editError}</p>}

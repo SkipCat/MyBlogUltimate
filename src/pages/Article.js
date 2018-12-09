@@ -48,46 +48,74 @@ class Article extends Component {
     const { article, user } = this.props;
 
     return (
-      <main>
+      <main className="container">
         { article ? (
           <Fragment>
             <h1>{article.title}</h1>
-            <p>Published on {article.dateCreated} by {article.author}</p>
+            <p className="italic">Published on {article.dateCreated} by {article.author}</p>
             { (article.dateUpdated !== article.dateCreated) &&
-              <p>Updated on {article.dateUpdated}</p>
+              <p className="italic">Updated on {article.dateUpdated}</p>
             }
-            <p>{article.content}</p>
-            { (user.token && user.role !== 'USER') && 
-              <Link to={`/article/edit/${article._id}`}>Edit this article</Link>
+            <p className="text">{article.content}</p>
+            { (user.token && user.role !== 'USER') &&
+              <div className="row">
+                <div className="right">
+                  <Link to={`/article/edit/${article._id}`} className="btn orange accent-2">
+                    <i className="material-icons left">edit</i>
+                    Edit article
+                  </Link>
+                  { user.role === 'SUPERADMIN' && (
+                    <button
+                      onClick={this.onDeleteArticle} className="btn pink darken-2">
+                      <i className="material-icons left">delete_forever</i>
+                      DELETE ARTICLE
+                    </button>
+                  )}
+                </div>
+              </div>
             }
             { user.token && (
               <Fragment>
-                <h2>Post a comment</h2>
+                <h5>Post a comment</h5>
                 <form>
                   <textarea
                     name="comment" required
                     value={this.state.comment}
                     onChange={this.handleInputChange}
                   />
-                  <button onClick={this.onSubmitComment}>POST</button>
+                  <div className="row">
+                    <button onClick={this.onSubmitComment} className="right btn-small orange accent-2">
+                      POST
+                      <i className="material-icons right">send</i>
+                    </button>
+                  </div>
                 </form>
               </Fragment>
             )}
-            { article.comments && article.comments.map(comment => (
-              <div key={comment._id}>
-                <p>{comment.author} on {comment.dateCreated}</p>
-                <p>{comment.content}</p>
-                { (comment.author === user._id || article.author === user._id
-                  || user.role === 'SUPERADMIN') && (
-                  <button onClick={(e) => this.onDeleteComment(e, comment._id)}>
-                    DELETE
-                  </button>
-                )}
-              </div>
-            ))}
-            { user.role === 'SUPERADMIN' && (
-              <button onClick={this.onDeleteArticle}>DELETE ARTICLE</button>
-            )} 
+            <h5>Comments</h5>
+            { article.comments ? (
+              article.comments.map(comment => (
+                <div className="card">
+                  <div key={comment._id} className="card-content">
+                    <p>{comment.author} on {comment.dateCreated}</p>
+                    <p>{comment.content}</p>
+                  </div>
+                  <div className="card-action">
+                    { (comment.author === user._id || article.author === user._id
+                      || user.role === 'SUPERADMIN') && (
+                      <button
+                        onClick={(e) => this.onDeleteComment(e, comment._id)}
+                        className="btn-flat btn-small pink-text text-darken-2 transparent no-padding"
+                      >
+                        <i className="material-icons left">delete_forever</i>
+                        DELETE
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ))) : (
+                <p>No comment was posted yet.</p>
+              )}
           </Fragment>
         ) : (
           <p>

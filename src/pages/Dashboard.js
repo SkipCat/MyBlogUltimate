@@ -41,101 +41,145 @@ class Dashboard extends Component {
     const { articles, users, comments } = this.props;
 
     return (
-      <main>
+      <main className="container">
         <h1>Dashboard</h1>
-        {/* <Link to="/admin/users">See all users</Link>
-        <Link to="/admin/articles">See all articles</Link>
-        <Link to="/admin/comments">See all comments</Link> */}
-        <h3>All articles</h3>
-        <Link to="/article/create">Write an article</Link>
-        { articles ? (
-          <table>
-            <thead>
-              <tr>
-                <th>Id</th>
-                <th>Title</th>
-                <th>Author</th>
-                <th>Date created</th>
-                <th>Last update</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-            { articles.map(article => (
-              <tr key={article._id}>
-                <td>{article._id}</td>
-                <td>{article.title}</td>
-                <td>{article.author}</td>
-                <td>{article.dateCreated}</td>
-                <td>{article.dateUpdated}</td>
-                <td>
-                  <Link to={`/article/${article._id}`}>See in detail</Link>
-                  <Link to={`/article/edit/${article._id}`}>Edit</Link>
-                  <button onClick={(e) => this.onDeleteArticle(e, article._id)}>Delete</button>
-                </td>
-              </tr>
-            ))}
-            </tbody>
-          </table>
-        ) : (
-          <p>No article was published yet :(</p>
-        )}
-        <hr/>
-        <h3>All users</h3>
-        { users && (
-          <table>
-            <thead>
-              <tr>
-                <th>Id</th>
-                <th>Username</th>
-                <th>Role</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-            { users.map(user => (
-              <tr key={user._id}>
-                <td>{user._id}</td>
-                <td>{user.username}</td>
-                <td>{user.role}</td>
-                <td>
-                  <Link to={`/profile/${user._id}`}>See in detail</Link>
-                  <Link to={`/profile/edit/${user._id}`}>Edit</Link>
-                  <button onClick={(e) => this.onDeleteUser(e, user._id)}>Delete</button>
-                </td>
-              </tr>
-            ))}
-            </tbody>
-          </table>
-        )}
-        <hr/>
-        <h3>All comments</h3>
-        { comments && (
-          <table>
-            <thead>
-              <tr>
-                <th>Id</th>
-                <th>Content</th>
-                <th>Author</th>
-                <th>From article</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-            { comments.map(comment => (
-              <tr key={comment._id}>
-                <td>{comment._id}</td>
-                <td>{comment.content}</td>
-                <td>{comment.author}</td>
-                <td>{comment.article}</td>
-                <td>
-                  <button onClick={(e) => this.onDeleteComment(e, comment._id)}>Delete</button>
-                </td>
-              </tr>
-            ))}
-            </tbody>
-          </table>
-        )}
+        <div className="row">
+          <a href="#users" className="btn-flat light-blue-text text-darken-1">Users</a>
+          <a href="#articles" className="btn-flat light-blue-text text-darken-1">Articles</a>
+          <a href="#comments" className="btn-flat light-blue-text text-darken-1">Comments</a>
+        </div>
+        <div id="users" className="dashboard-category">
+          <h5>All users</h5>
+          { users && (
+            <table>
+              <thead>
+                <tr>
+                  <th>Id</th>
+                  <th>Username</th>
+                  <th>Role</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+              { users.map(user => (
+                <tr key={user._id}>
+                  <td>{user._id}</td>
+                  <td>{user.username}</td>
+                  <td>{user.role}</td>
+                  <td>
+                    <Link
+                      to={`/profile/${user._id}`}
+                      className="btn-flat light-blue-text text-darken-1 action-btn"
+                    >
+                      See in detail
+                    </Link>
+                    <Link 
+                      to={`/profile/edit/${user._id}`}
+                      className="btn-flat orange-text text-accent-2 action-btn"
+                    >
+                      Edit
+                    </Link>
+                    <button 
+                      onClick={(e) => this.onDeleteUser(e, user._id)}
+                      className="btn-flat pink-text text-darken-2 action-btn"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+              </tbody>
+            </table>
+          )}
+        </div>
+        <div id="articles" className="dashboard-category">
+          <h5>All articles</h5>
+          <div className="row">
+            <Link to="/article/create" className="right btn orange accent-2">
+              <i class="material-icons left">add</i>
+              Write an article
+            </Link>
+          </div>
+          { articles && (
+            <table>
+              <thead>
+                <tr>
+                  <th>Id</th>
+                  <th>Title</th>
+                  <th>Author</th>
+                  <th>Date created</th>
+                  <th>Last update</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+              { articles.map(article => (
+                <tr key={article._id}>
+                  <td>{article._id}</td>
+                  <td>{article.title}</td>
+                  <td>{article.author}</td>
+                  <td>{article.dateCreated}</td>
+                  <td>{article.dateUpdated}</td>
+                  <td>
+                    <Link
+                      to={`/article/${article._id}`}
+                      className="btn-flat light-blue-text text-darken-1 action-btn"
+                    >
+                      See in detail
+                    </Link>
+                    <Link 
+                      to={`/profile/edit/${article._id}`}
+                      className="btn-flat orange-text text-accent-2 action-btn"
+                    >
+                      Edit
+                    </Link>
+                    <button 
+                      onClick={(e) => this.onDeleteArticle(e, article._id)}
+                      className="btn-flat pink-text text-darken-2 action-btn"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+              </tbody>
+            </table>
+          )}
+        </div>
+        <div id="comments" className="dashboard-category">
+          <h5>All comments</h5>
+          { comments && (
+            <table>
+              <thead>
+                <tr>
+                  <th>Id</th>
+                  <th>Content</th>
+                  <th>Author</th>
+                  <th>From article</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+              { comments.map(comment => (
+                <tr key={comment._id}>
+                  <td>{comment._id}</td>
+                  <td>{comment.content}</td>
+                  <td>{comment.author}</td>
+                  <td>{comment.article}</td>
+                  <td>
+                    <button
+                      onClick={(e) => this.onDeleteComment(e, comment._id)}
+                      className="btn-flat pink-text text-darken-2 action-btn"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+              </tbody>
+            </table>
+          )}
+        </div>
       </main>
     );
   }
