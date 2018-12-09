@@ -9,6 +9,11 @@ class Register extends Component {
   constructor(props) {
     super(props);
     this.state = { username: '', password: '' };
+
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user && user.token) {
+      this.props.history.push('/');
+    }
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {

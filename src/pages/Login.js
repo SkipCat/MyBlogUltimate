@@ -13,6 +13,10 @@ class Login extends Component {
       password: '',
       prevPath: ''
     };
+
+    if (this.props.user && this.props.user.token) {
+      this.props.history.push('/');
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -83,7 +87,8 @@ class Login extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  user: state.userReducer.user,
+  user: state.userReducer.user
+    || JSON.parse(localStorage.getItem('user')) || undefined,
   loginError: state.userReducer.loginError
 });
 
