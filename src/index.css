@@ -65,3 +65,6 @@ textarea {
 .action-btn {
   text-transform: capitalize;
 }
+.btn-flat:hover {
+  text-decoration: underline;
+}

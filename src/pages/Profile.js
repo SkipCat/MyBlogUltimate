@@ -19,11 +19,22 @@ class Profile extends Component {
     this.props.history.push('/login');
   }
 
+  goBack = () => {
+    this.props.history.goBack();
+  }
+
   render() {
     const { profile, user } = this.props;
     
     return (
       <main className="container">
+        <button
+          onClick={this.goBack}
+          className="btn-flat action-btn light-blue-text text-darken-1 no-padding"
+        >
+          <i className="material-icons left">arrow_back</i>
+          Go back
+        </button>
         { profile ? (
           <Fragment>
             <h1>{profile.username}</h1>

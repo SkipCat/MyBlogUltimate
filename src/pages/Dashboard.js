@@ -37,11 +37,22 @@ class Dashboard extends Component {
     this.props.deleteComment({ id, userId: this.props.user._id });
   }
 
+  goBack = () => {
+    this.props.history.push('/');
+  }
+
   render() {
     const { articles, users, comments } = this.props;
 
     return (
       <main className="container">
+        <button
+            onClick={this.goBack}
+            className="btn-flat action-btn light-blue-text text-darken-1 no-padding"
+          >
+          <i className="material-icons left">arrow_back</i>
+          Go back to home
+        </button>
         <h1>Dashboard</h1>
         <div className="row">
           <a href="#users" className="btn-flat light-blue-text text-darken-1">Users</a>
@@ -128,7 +139,7 @@ class Dashboard extends Component {
                       See in detail
                     </Link>
                     <Link 
-                      to={`/profile/edit/${article._id}`}
+                      to={`/article/edit/${article._id}`}
                       className="btn-flat orange-text text-accent-2 action-btn"
                     >
                       Edit

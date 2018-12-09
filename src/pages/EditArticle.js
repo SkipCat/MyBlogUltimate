@@ -43,9 +43,20 @@ class EditArticle extends Component {
     });
   }
 
+  goBack = () => {
+    this.props.history.goBack();
+  }
+
   render() {
     return (
       <main className="container">
+        <button
+          onClick={this.goBack}
+          className="btn-flat action-btn light-blue-text text-darken-1 no-padding"
+        >
+          <i className="material-icons left">arrow_back</i>
+          Go back
+        </button>
         { this.props.user.role === 'USER' ? (
           <Fragment>
             <h1>403 Forbidden</h1>

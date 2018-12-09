@@ -36,7 +36,6 @@ class Home extends Component {
             <li key={article._id} className="card">
               <div className="card-content">
                 <p className="card-title">{article.title}</p>
-                <p>{article.content}</p>
                 <p>{article.author}</p>
                 <p>{article.dateCreated}</p>
               </div>
