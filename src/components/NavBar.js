@@ -20,6 +20,7 @@ class NavBar extends Component {
         <Link to="/">Home</Link>
         { user && user.token ? (
           <Fragment>
+            {user.role === 'SUPERADMIN' && <Link to={`/admin`}>Dashboard</Link>}
             <Link to={`/profile/${user._id}`}>{user.username}</Link>
             <button onClick={this.onSubmit}>Logout</button>
           </Fragment>

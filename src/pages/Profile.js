@@ -24,7 +24,7 @@ class Profile extends Component {
             <ul>
               { profile.articles ? (
                 <Fragment>
-                  <p>You have written {profile.articles.length} article(s).</p>
+                  <p>Number of written article(s): {profile.articles.length}.</p>
                   { profile.articles.map(article => (
                     <li key={article._id}>
                       <Link to={`/article/${article._id}`}>
@@ -35,13 +35,13 @@ class Profile extends Component {
                   ))}
                 </Fragment>
               ) : (
-                <p>You have not written any article yet :(</p>
+                <p>No written article yet :(</p>
               )}
             </ul>
             <ul>
               { profile.comments ? (
                 <Fragment>
-                  <p>You have written {profile.comments.length} comment(s).</p>
+                  <p>Number of written comment(s): {profile.comments.length}.</p>
                   { profile.comments.map(comment => (
                     <li key={comment._id}>
                       <p>{comment.content}</p>
@@ -53,11 +53,11 @@ class Profile extends Component {
                   ))}
                 </Fragment>
               ) : (
-                <p>You have not written any comment yet :(</p>
+                <p>No written comment yet :(</p>
               )}
             </ul>
-            { profile._id === user._id && (
-              <Link to="/profile/edit">Edit your profile</Link>
+            { (profile._id === user._id || user.role === 'SUPERADMIN') && (
+              <Link to={`/profile/edit/${profile._id}`}>Edit profile</Link>
             )}
           </Fragment>
         ) : (

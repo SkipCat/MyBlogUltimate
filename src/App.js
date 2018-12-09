@@ -10,6 +10,7 @@ import Article from './pages/Article';
 import EditArticle from './pages/EditArticle';
 import Profile from './pages/Profile';
 import EditProfile from './pages/EditProfile';
+import Dashboard from './pages/Dashboard';
 import NotFound from './pages/NotFound';
 
 import NavBar from './components/NavBar';
@@ -32,8 +33,9 @@ class App extends Component {
           <Route path="/article/:id" component={Article}/>
           <Route exact path="/register" component={Register}/>
           <Route exact path="/login" component={Login}/>
-          <Route exact path="/profile/edit" component={withAuth(EditProfile)}/>
+          <Route path="/profile/edit/:id" component={withAuth(EditProfile)}/>
           <Route path="/profile/:id" component={Profile}/>
+          <Route exact path="/admin" component={withAuth(Dashboard)}/>
           <Route path="" component={NotFound}/>
         </Switch>
       </div>

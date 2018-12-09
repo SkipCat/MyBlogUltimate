@@ -2,16 +2,33 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import { editProfile } from '../actions/user';
+import { getProfile, editProfile } from '../actions/user';
 
 class EditProfile extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      username: this.props.user.username,
-      password: ''
+      username: '',
+      password: '',
+      role: ''
     };
+
+    if (!this.props.profile) {
+      this.props.getProfile(
+        window.location.href.substr(window.location.href.lastIndexOf('/') + 1)
+      );
+    }
+  }
+
+  componentDidMount() {
+    const { profile } = this.props;
+    if (profile) {
+      this.setState({
+        username: profile.username,
+        role: profile.role
+      });
+    }
   }
 
   handleInputChange = (event) => {
@@ -21,15 +38,19 @@ class EditProfile extends Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-    this.props.editProfile({ ...this.state, _id: this.props.user._id });
+    this.props.editProfile({
+      ...this.state,
+      _id: this.props.profile._id,
+      userId: this.props.user._id
+    });
   }
 
   render() {
-    const { editError } = this.props;
+    const { user, editError } = this.props;
 
     return (
       <main>
-        <h1>Edit your profile</h1>
+        <h1>Edit profile</h1>
         <form>
           <label htmlFor="username">Username</label>
           <input
@@ -48,6 +69,17 @@ class EditProfile extends Component {
           />
           <button onClick={this.onSubmit}>CHANGE PASSWORD</button>
         </form>
+        { user.role === 'SUPERADMIN' && (
+          <form>
+            <label htmlFor="role">Role</label>
+            <input
+              type="type" name="role" required
+              value={this.state.role}
+              onChange={this.handleInputChange}
+            />
+            <button onClick={this.onSubmit}>CHANGE ROLE</button>
+          </form>
+        )}
         {editError && <p>{editError}</p>}
       </main>
     );
@@ -55,12 +87,16 @@ class EditProfile extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  editError: state.userReducer.editError
+  editError: state.userReducer.editError,
+  profile: state.userReducer.profile
 });
 
 const mapDispatchProps = (dispatch) => ({
   editProfile: (payload) => {
     dispatch(editProfile(payload))
+  },
+  getProfile: (payload) => {
+    dispatch(getProfile(payload))
   },
 });
 

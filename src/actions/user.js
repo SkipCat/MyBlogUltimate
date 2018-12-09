@@ -33,3 +33,12 @@ export const editProfile = (payload) => ({
   type: 'MIDDLEWARE_EDIT_PROFILE',
   payload
 });
+
+export const getUsers = () => ({
+  type: 'MIDDLEWARE_GET_USERS'
+});
+
+export const deleteUser = (payload) => ({
+  type: 'MIDDLEWARE_DELETE_USER',
+  payload
+});

@@ -1,4 +1,4 @@
-import { postRequest, getRequest } from '../utils/requests';
+import { postRequest, getRequest, deleteRequest } from '../utils/requests';
 
 export const REGISTER_OK = 'REGISTER_OK';
 export const REGISTER_ERROR = 'REGISTER_ERROR';
@@ -8,6 +8,10 @@ export const GET_PROFILE_OK = 'GET_PROFILE_OK';
 export const GET_PROFILE_ERROR = 'GET_PROFILE_ERROR';
 export const EDIT_PROFILE_OK = 'EDIT_PROFILE_OK';
 export const EDIT_PROFILE_ERROR = 'EDIT_PROFILE_ERROR';
+export const GET_USERS_OK = 'GET_USERS_OK';
+export const GET_USERS_ERROR = 'GET_USERS_ERROR';
+export const DELETE_USER_OK = 'DELETE_USER_OK';
+export const DELETE_USER_ERROR = 'DELETE_USER_ERROR';
 
 export default {
   MIDDLEWARE_REGISTER: (payload, dispatch) => {
@@ -80,7 +84,7 @@ export default {
     }));
   },
   MIDDLEWARE_EDIT_PROFILE: (payload, dispatch) => {
-    postRequest('/profile/edit', payload).then(
+    postRequest(`/profile/edit/${payload._id}`, payload).then(
       response => {
         if (response.error) {
           return dispatch({
@@ -101,5 +105,51 @@ export default {
       type: EDIT_PROFILE_ERROR,
       payload: err
     }));
-  }
+  },
+  MIDDLEWARE_GET_USERS: (_, dispatch) => {
+    getRequest('/user/all').then(
+      response => {
+        if (response.error) {
+          return dispatch({
+            type: GET_USERS_ERROR,
+            payload: response
+          });
+        }
+        return dispatch({
+          type: GET_USERS_OK,
+          payload: response
+        });
+      },
+      error => dispatch({
+        type: GET_USERS_ERROR,
+        payload: error
+      })
+    ).catch(err => dispatch({
+      type: GET_USERS_ERROR,
+      payload: err
+    }));
+  },
+  MIDDLEWARE_DELETE_USER: (payload, dispatch) => {
+    deleteRequest(`/user/delete/${payload._id}`, payload).then(
+      response => {
+        if (response.error) {
+          return dispatch({
+            type: DELETE_USER_ERROR,
+            payload: response
+          });
+        }
+        return dispatch({
+          type: DELETE_USER_OK,
+          payload: response
+        });
+      },
+      error => dispatch({
+        type: DELETE_USER_ERROR,
+        payload: error
+      })
+    ).catch(err => dispatch({
+      type: DELETE_USER_ERROR,
+      payload: err
+    }));
+  },
 };

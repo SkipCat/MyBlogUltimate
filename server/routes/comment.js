@@ -85,4 +85,11 @@ commentRouter.delete('/delete/:id', (req, res) => {
   }).catch(error => res.status(500).json({ error: error.message }));
 });
 
+commentRouter.get('/all', (req, res) => {
+  Comment.find().populate('users articles').exec().then(comments => {
+    res.status(200).json({ response: comments })
+  }).catch(error => res.status(500).json({ error: error.message }));
+});
+
+
 module.exports = commentRouter;

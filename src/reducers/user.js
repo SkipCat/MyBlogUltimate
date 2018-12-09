@@ -7,7 +7,11 @@ import {
   GET_PROFILE_OK,
   GET_PROFILE_ERROR,
   EDIT_PROFILE_OK,
-  EDIT_PROFILE_ERROR
+  EDIT_PROFILE_ERROR,
+  GET_USERS_OK,
+  GET_USERS_ERROR,
+  DELETE_USER_OK,
+  DELETE_USER_ERROR
 } from '../middlewares/user';
 
 const initialState = {
@@ -40,24 +44,48 @@ export default (state = initialState, action) => {
     case GET_PROFILE_OK:
       return { ...state, profile: action.payload.response };
     case GET_PROFILE_ERROR:
-      return { ...state, profile: action.payload.response };
+      return { ...state, profile: action.payload.error };
     case EDIT_PROFILE_OK:
+      const updatedUser = action.payload.response;
       const oldUser = JSON.parse(localStorage.getItem('user'));
-      const newUsername = action.payload.response.username
 
-      localStorage.removeItem('user');
-      localStorage.setItem('user', JSON.stringify({
-        token: oldUser.token,
-        username: newUsername,
-        _id: oldUser._id
-      }));
+      if (updatedUser._id === oldUser._id) {
+        localStorage.removeItem('user');
+        localStorage.setItem('user', JSON.stringify({
+          token: oldUser.token,
+          username: updatedUser.username,
+          _id: oldUser._id
+        }));
+
+        return {
+          ...state,
+          user: { ...state.user, username: updatedUser.username },
+          profile: {
+            ...state.profile,
+            username: updatedUser.username,
+            role: updatedUser.role
+          },
+        };
+      }
 
       return {
         ...state,
-        user: { ...state.user, username: newUsername }
+        profile: {
+          ...state.profile,
+          username: updatedUser.username,
+          role: updatedUser.role
+        }
       };
     case EDIT_PROFILE_ERROR:
       return { ...state, editError: action.payload.error };
+    case GET_USERS_OK:
+      return { ...state, users: action.payload.response };
+    case GET_USERS_ERROR:
+      return { ...state, data: action.payload.error };
+    case DELETE_USER_OK:
+      return { ...state, data: action.payload.response };
+    case DELETE_USER_ERROR:
+      return { ...state, error: action.payload.error };
     default:
       return state;
   }
