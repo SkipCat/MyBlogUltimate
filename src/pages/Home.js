@@ -19,8 +19,12 @@ class Home extends Component {
     return (
       <main className="container">
         <h1>My Blog Ultimate</h1>
-        { (!user || (user && !user.token)) && <Link to="/login">Log in</Link>}
-        { (user.token && user.role !== 'USER') && (
+        { (!user || (user && !user.token)) && (
+          <div className="row">
+            <Link to="/login" className="right btn pink darken-2">Log in</Link>
+          </div>
+        )}
+        { (user && user.token && user.role !== 'USER') && (
           <div className="row">
             { user.role === 'SUPERADMIN' && (
               <Link to="/admin" className="btn pink darken-2">
@@ -38,7 +42,10 @@ class Home extends Component {
             <li key={article._id} className="card">
               <div className="card-content">
                 <p className="card-title">{article.title}</p>
-                <p>{article.author}</p>
+                { article.author
+                  ? <p>{article.author.username}</p>
+                  : <i>deleted</i>
+                }
                 <p>{dateToString(article.dateCreated)}</p>
               </div>
               <div className="card-action">
