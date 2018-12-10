@@ -11,18 +11,19 @@ if (config.error) {
   throw config.error;
 }
 
-const { DB, HOST, PROJECT, PORT } = process.env;
+const { MONGODB_URI, PORT } = process.env;
 const app = express();
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(expressValidator());
-app.use(express.static(path.join(__dirname, 'src/build')));
 
-mongoose.connect(
-  `${DB}://${HOST}/${PROJECT}`, { useNewUrlParser: true }
-).then(() => {
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../build')));
+}
+
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true}).then(() => {
   app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
 });
 
