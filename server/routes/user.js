@@ -9,10 +9,7 @@ import Comment from '../models/Comment.model';
 
 const userRouter = express.Router();
 
-const config = dotenv.config();
-if (config.error) {
-  throw config.error;
-}
+dotenv.config();
 
 userRouter.post('/register', (req, res) => {
   const { username, password } = req.body;

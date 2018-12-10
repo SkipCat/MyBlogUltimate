@@ -7,10 +7,7 @@ import User from '../models/User.model';
 
 const commentRouter = express.Router();
 
-const config = dotenv.config();
-if (config.error) {
-  throw config.error;
-}
+dotenv.config();
 
 commentRouter.post('/create', (req, res) => {
   const { content, author, article } = req.body;

@@ -6,10 +6,7 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import expressValidator from 'express-validator';
 
-const config = dotenv.config();
-if (config.error) {
-  throw config.error;
-}
+dotenv.config();
 
 const { MONGODB_URI, PORT } = process.env;
 const app = express();
