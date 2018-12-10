@@ -18,7 +18,6 @@ export default (state = {}, action) => {
     case CREATE_ARTICLE_ERROR:
       return { ...state, data: action.payload.error };
     case GET_ARTICLES_OK:
-    console.log(action.payload.response)
       return { ...state, articles: action.payload.response };
     case GET_ARTICLES_ERROR:
       return { ...state, data: action.payload.error };
