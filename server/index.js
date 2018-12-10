@@ -21,6 +21,9 @@ app.use(expressValidator());
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../build')));
+  app.use(function (req, res, next) {
+    res.sendFile(path.resolve(__dirname, '../build/index.html'))
+  });
 }
 
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true}).then(() => {
