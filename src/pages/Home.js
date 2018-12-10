@@ -32,7 +32,7 @@ class Home extends Component {
               </Link>
             )}
             <Link to="/article/create" className="right btn orange accent-2">
-              <i class="material-icons left">add</i>
+              <i className="material-icons left">add</i>
               Write an article
             </Link>
           </div>

@@ -1,4 +1,4 @@
-const baseUrl = `https://${window.location.hostname}`;
+const baseUrl = `http://${window.location.hostname}:${5000}`;
 
 export const postRequest = (route, data) => {
   return fetch(`${baseUrl}${route}`, {
