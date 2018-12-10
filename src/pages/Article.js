@@ -64,21 +64,21 @@ class Article extends Component {
           <Fragment>
             <h1>{article.title}</h1>
             <p className="italic">
-              Published on {dateToString(article.dateCreated)} by &nbsp;
-              <Link to={`/profile/${article.author._id}`}>{article.author.username}</Link>
+              Published on {dateToString(article.dateCreated)} by
+              &nbsp;<Link to={`/profile/${article.author._id}`}>{article.author.username}</Link>
             </p>
             { (article.dateUpdated !== article.dateCreated) &&
               <p className="italic">Updated on {dateToString(article.dateUpdated)}</p>
             }
             <p className="text">{article.content}</p>
-            { (user.token && user.role !== 'USER') &&
+            { (user && user.token && user.role !== 'USER') &&
               <div className="row">
                 <div className="right">
                   <Link to={`/article/edit/${article._id}`} className="btn-flat orange-text text-accent-2">
                     <i className="material-icons left">edit</i>
                     Edit article
                   </Link>
-                  { user.role === 'SUPERADMIN' && (
+                  { (user && user.role === 'SUPERADMIN') && (
                     <button
                       onClick={this.onDeleteArticle} className="btn-flat pink-text text-darken-2">
                       <i className="material-icons left">delete_forever</i>
@@ -88,8 +88,8 @@ class Article extends Component {
                 </div>
               </div>
             }
-            { user.token && (
-              <Fragment>
+            { (user && user.token) && (
+              <div className="category">
                 <h5>Post a comment</h5>
                 <form>
                   <textarea
@@ -99,38 +99,40 @@ class Article extends Component {
                     className="materialize-textarea"
                   />
                   <div className="row">
-                    <button onClick={this.onSubmitComment} className="right btn-small orange accent-2">
+                    <button onClick={this.onSubmitComment} className="right btn-small">
                       POST
                       <i className="material-icons right">send</i>
                     </button>
                   </div>
                 </form>
-              </Fragment>
+              </div>
             )}
-            <h5>Comments</h5>
-            { article.comments ? (
-              article.comments.map(comment => (
-                <div className="card">
-                  <div key={comment._id} className="card-content">
-                    <p className="card-title">{comment.content}</p>
-                    <p>{comment.author} on {dateToString(comment.dateCreated)}</p>
-                  </div>
-                  <div className="card-action">
-                    { (comment.author === user._id || article.author === user._id
-                      || user.role === 'SUPERADMIN') && (
-                      <button
-                        onClick={(e) => this.onDeleteComment(e, comment._id)}
-                        className="btn-flat btn-small pink-text text-darken-2 transparent no-padding"
-                      >
-                        <i className="material-icons left">delete_forever</i>
-                        DELETE
-                      </button>
+            <div className="category">
+              <h5>Comments</h5>
+              { article.comments ? (
+                article.comments.map(comment => (
+                  <div className="card">
+                    <div key={comment._id} className="card-content">
+                      <p className="card-title">{comment.content}</p>
+                      <p>{comment.author} on {dateToString(comment.dateCreated)}</p>
+                    </div>
+                    { (user && (comment.author === user._id || article.author === user._id
+                      || user.role === 'SUPERADMIN')) && (
+                      <div className="card-action">
+                        <button
+                          onClick={(e) => this.onDeleteComment(e, comment._id)}
+                          className="btn-flat btn-small pink-text text-darken-2 transparent no-padding"
+                        >
+                          <i className="material-icons left">delete_forever</i>
+                          DELETE
+                        </button>
+                      </div>
                     )}
                   </div>
-                </div>
-              ))) : (
-                <p>No comment was posted yet.</p>
-              )}
+                ))) : (
+                  <p>No comment was posted yet.</p>
+                )}
+            </div>
           </Fragment>
         ) : (
           <p>

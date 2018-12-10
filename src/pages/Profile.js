@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 
 import { getProfile, logoutUser } from '../actions/user';
 
+import { dateToString } from '../utils/date';
+
 class Profile extends Component {
 
   constructor(props) {
@@ -38,29 +40,43 @@ class Profile extends Component {
         { profile ? (
           <Fragment>
             <h1>{profile.username}</h1>
-            <h5>Number of written article(s): {profile.articles.length}.</h5>
-            <ul>
-              { profile.articles && profile.articles.map(article => (
-                <li key={article._id}>
-                  <Link to={`/article/${article._id}`}>
-                    <p>{article.title}</p>
-                  </Link>
-                  <p>the {article.dateCreated}</p>
-                </li>
-              ))}
-            </ul>
-            <h5>Number of written comment(s): {profile.comments.length}.</h5>
-            <ul>
-              { profile.comments && profile.comments.map(comment => (
-                <li key={comment._id}>
-                  <p>{comment.content}</p>
-                  <p>
-                    the
-                    <Link to={`/article/${comment.article}`}>{comment.article}</Link>
-                  </p>
-                </li>
-              ))}
-            </ul>
+            <div className="category">
+              <h5>Number of written article(s): {profile.articles.length}.</h5>
+              <ul>
+                { profile.articles && profile.articles.map(article => (
+                  <li key={article._id} className="card">
+                    <div className="card-content">
+                      <p className="card-title">{article.title}</p>
+                      { article.author
+                        ? <p>{article.author.username}</p>
+                        : <i>deleted</i>
+                      }
+                      <p>{dateToString(article.dateCreated)}</p>
+                    </div>
+                    <div className="card-action">
+                      <Link to={`article/${article._id}`}>SEE ARTICLE</Link>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="category">
+              <h5>Number of written comment(s): {profile.comments.length}.</h5>
+              <ul>
+                { profile.comments && profile.comments.map(comment => (
+                  <li key={comment._id} className="card">
+                    <div key={comment._id} className="card-content">
+                      <p className="card-title">{comment.content}</p>
+                      <p>{comment.author} on {dateToString(comment.dateCreated)}</p>
+                      <p>
+                        from article
+                        &nbsp;<Link to={`/article/${comment.article._id}`}>{comment.article.title}</Link>
+                      </p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
             { (profile._id === user._id || user.role === 'SUPERADMIN') && (
               <div className="row">
                 <Link to={`/profile/edit/${profile._id}`} className="right btn orange accent-2">

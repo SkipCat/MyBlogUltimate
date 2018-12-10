@@ -16,7 +16,18 @@ import NotFound from './pages/NotFound';
 import NavBar from './components/NavBar';
 import withAuth from './components/withAuth';
 
+import { logoutUser } from './actions/user';
+
 class App extends Component {
+
+  constructor(props) {
+    super(props);
+
+    const { user } = this.props;
+    if (!user || (user && !user.token)) {
+      this.props.logoutUser();
+    }
+  }
 
   render() {
     return (
@@ -46,4 +57,10 @@ const mapStateToProps = (state) => ({
     || JSON.parse(localStorage.getItem('user')) || undefined
 });
 
-export default withRouter(connect(mapStateToProps, {})(App));
+const mapDispatchProps = (dispatch) => ({
+  logoutUser: () => {
+    dispatch(logoutUser())
+  },
+});
+
+export default withRouter(connect(mapStateToProps, mapDispatchProps)(App));

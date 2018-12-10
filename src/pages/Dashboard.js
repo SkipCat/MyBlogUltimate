@@ -61,7 +61,7 @@ class Dashboard extends Component {
           <a href="#articles" className="btn-flat light-blue-text text-darken-1">Articles</a>
           <a href="#comments" className="btn-flat light-blue-text text-darken-1">Comments</a>
         </div>
-        <div id="users" className="dashboard-category">
+        <div id="users" className="category">
           <h5>All users</h5>
           { users && (
             <table>
@@ -105,7 +105,7 @@ class Dashboard extends Component {
             </table>
           )}
         </div>
-        <div id="articles" className="dashboard-category">
+        <div id="articles" className="category">
           <h5>All articles</h5>
           <div className="row">
             <Link to="/article/create" className="right btn orange accent-2">
@@ -164,7 +164,7 @@ class Dashboard extends Component {
             </table>
           )}
         </div>
-        <div id="comments" className="dashboard-category">
+        <div id="comments" className="category">
           <h5>All comments</h5>
           { comments && (
             <table>
