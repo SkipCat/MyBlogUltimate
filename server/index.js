@@ -12,7 +12,13 @@ if (config.error) {
 }
 
 const { MONGODB_URI, PORT } = process.env;
+const port = process.env.PORT
+const host = process.env.baseURL
+
 const app = express();
+
+app.set('ip', host)
+app.set('port', port)
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -23,7 +29,7 @@ if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../build')));
 }
 
-mongoose.connect(MONGODB_URI, { useNewUrlParser: true}).then(() => {
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true }).then(() => {
   app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
 });
 
