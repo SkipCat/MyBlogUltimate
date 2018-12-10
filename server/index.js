@@ -8,7 +8,7 @@ import expressValidator from 'express-validator';
 
 dotenv.config();
 
-const { MONGODB_URI, PORT } = process.env;
+const { DB, HOST, PROJECT, PORT } = process.env;
 const app = express();
 
 app.use(cors());
@@ -23,7 +23,9 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-mongoose.connect(MONGODB_URI, { useNewUrlParser: true}).then(() => {
+mongoose.connect(
+  `${DB}://${HOST}/${PROJECT}`, { useNewUrlParser: true }
+).then(() => {
   app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
 });
 

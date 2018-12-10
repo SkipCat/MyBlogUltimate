@@ -1,4 +1,4 @@
-const baseUrl = `https://${window.location.hostname}`;
+const baseUrl = process.env.NODE_ENV === 'production' ? '' : `http://${window.location.hostname}:${5000}`;
 
 export const postRequest = (route, data) => {
   return fetch(`${baseUrl}${route}`, {
