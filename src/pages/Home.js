@@ -19,7 +19,7 @@ class Home extends Component {
     return (
       <main className="container">
         <h1>My Blog Ultimate</h1>
-        {!user.token && <Link to="/login">Log in</Link>}
+        { (!user || (user && !user.token)) && <Link to="/login">Log in</Link>}
         { (user.token && user.role !== 'USER') && (
           <div className="row">
             { user.role === 'SUPERADMIN' && (
