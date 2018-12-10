@@ -18,7 +18,10 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(expressValidator());
-app.use(express.static(path.join(__dirname, 'src/build')));
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../build')));
+}
 
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true}).then(() => {
   app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
